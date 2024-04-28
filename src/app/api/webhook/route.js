@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import Stripe from "stripe";
+import axios from "axios";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -27,12 +28,20 @@ export async function POST(request) {
       // guardar en una base de datos
       console.log(
         "Consultado producto con id",
-        checkoutSessionCompleted.metadata.productId
+        checkoutSessionCompleted.metadata.registroId
       );
 
       // enviar un correo
 
-      console.log({ checkoutSessionCompleted });
+      axios.put('http://localhost:3000/api/registros/'+ checkoutSessionCompleted.metadata.registroId, {
+        nombre_u: checkoutSessionCompleted.customer_details.name,
+        email: checkoutSessionCompleted.customer_details.email,
+        pagado: true
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
       break;
     default:
       console.log(`Evento no manejado: ${event.type}`);

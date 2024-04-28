@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
+import uniqid from 'uniqid';
+import axios from "axios";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(request) {
   const body = await request.json();
-
+  const registroId = uniqid();
   const session = await stripe.checkout.sessions.create({
     success_url: `${process.env.DOMAIN_URL}/success`,
     line_items: [
@@ -22,11 +24,23 @@ export async function POST(request) {
       },
     ],
     metadata: {
-       productId: body.id 
+        registroId: registroId 
     },
     mode: "payment",
   });
 
+  axios.post('http://localhost:3000/api/registros', {
+    id: registroId,
+    productId: body.id,
+    nombre_u: "",
+    email: "",
+    description: body.description,
+    price: body.price,
+    pagado: false
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 
   return NextResponse.json(session);
 }
