@@ -1,7 +1,7 @@
 import axios from "axios";
 
 async function loadRegistros(){
-  const { data } = await axios.get('http://localhost:3000/api/registros');
+  const { data } = await axios.get(`${process.env.DOMAIN_URL}/api/registros`);
   return data;
 }
 

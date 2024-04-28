@@ -2,7 +2,7 @@
 import axios from "axios";
 
 async function loadProducts(){
-  const { data } = await axios.get('http://localhost:3000/api/products');
+  const { data } = await axios.get(`${process.env.DOMAIN_URL}/api/products`);
   return data;
 }
 

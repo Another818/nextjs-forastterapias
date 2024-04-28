@@ -33,7 +33,7 @@ export async function POST(request) {
 
       // enviar un correo
 
-      axios.put('http://localhost:3000/api/registros/'+ checkoutSessionCompleted.metadata.registroId, {
+      axios.put(`${process.env.DOMAIN_URL}/api/registros/`+ checkoutSessionCompleted.metadata.registroId, {
         nombre_u: checkoutSessionCompleted.customer_details.name,
         email: checkoutSessionCompleted.customer_details.email,
         pagado: true

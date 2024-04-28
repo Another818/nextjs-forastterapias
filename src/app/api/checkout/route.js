@@ -29,7 +29,7 @@ export async function POST(request) {
     mode: "payment",
   });
 
-  axios.post('http://localhost:3000/api/registros', {
+  axios.post(`${process.env.DOMAIN_URL}/api/registros`, {
     id: registroId,
     productId: body.id,
     nombre_u: "",
